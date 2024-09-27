@@ -36,16 +36,36 @@ import { Parser } from "./parser.js";
  * formParser.getStringArray("hobbies");
  */
 export class FormParser extends Parser<FormData> {
+	/**
+	 * Checks if the given key exists in the FormData.
+	 *
+	 * @param key - The name of the form field.
+	 * @returns `true` if the key exists, otherwise `false`.
+	 */
 	public has(key: string): boolean {
 		return this.value.has(key);
 	}
 
+	/**
+	 * Retrieves the value of the specified form field.
+	 *
+	 * @param key - The name of the form field.
+	 * @throws {Parser.MissingKeyError} If the key is missing from the form data.
+	 * @returns The value associated with the key, or throws if it doesn't exist.
+	 */
 	public get(key: string): unknown {
 		let value = this.value.get(key);
 		if (!value) throw new Parser.MissingKeyError(key);
 		return value;
 	}
 
+	/**
+	 * Retrieves all values associated with the specified form field as an array.
+	 *
+	 * @param key - The name of the form field.
+	 * @throws {Parser.MissingKeyError} If the key is missing from the form data.
+	 * @returns An array of values associated with the key.
+	 */
 	public getAll(key: string) {
 		let list = this.value.getAll(key);
 		if (!list) throw new Parser.MissingKeyError(key);
@@ -53,7 +73,11 @@ export class FormParser extends Parser<FormData> {
 	}
 
 	/**
-	 * Returns `true` if the value is `"on"`, otherwise `false`.
+	 * Returns `true` if the value of the specified field is `"on"`, otherwise
+	 * `false`.
+	 *
+	 * @param key - The name of the form field.
+	 * @returns A boolean representation of the form field value.
 	 */
 	public getBoolean(key: string): boolean {
 		if (!this.has(key)) return false;
@@ -61,25 +85,73 @@ export class FormParser extends Parser<FormData> {
 		return value === "on";
 	}
 
+	/**
+	 * Retrieves the value of the specified form field as a string.
+	 *
+	 * @param key - The name of the form field.
+	 * @throws {Parser.MissingKeyError} If the key is missing from the form data.
+	 * @throws {Parser.InvalidTypeError} If the value is not a string.
+	 * @returns The string value associated with the key.
+	 */
 	public getString(key: string): string {
 		let value = this.get(key);
 		if (typeof value === "string") return value;
 		throw new Parser.InvalidTypeError(key, "string", typeof value);
 	}
 
+	/**
+	 * Retrieves the value of the specified form field as a `File` object.
+	 *
+	 * @param key - The name of the form field.
+	 * @throws {Parser.MissingKeyError} If the key is missing from the form data.
+	 * @throws {Parser.InvalidInstanceOfError} If the value is not a `File` object.
+	 * @returns The `File` object associated with the key.
+	 */
 	public getFile(key: string): File {
 		let value = this.get(key);
 		if (value instanceof File) return value;
 		throw new Parser.InvalidInstanceOfError(key, "File");
 	}
 
+	/**
+	 * Retrieves all string values associated with the specified form field as an
+	 * array.
+	 *
+	 * @param key - The name of the form field.
+	 * @returns An array of string values associated with the key.
+	 */
 	public getStringArray(key: string) {
 		let value = this.getAll(key);
 		return value.filter((v) => typeof v === "string");
 	}
 
+	/**
+	 * Retrieves all `File` objects associated with the specified form field as
+	 * an array.
+	 *
+	 * @param key - The name of the form field.
+	 * @returns An array of `File` objects associated with the key.
+	 */
 	public getFileArray(key: string) {
 		let value = this.getAll(key);
 		return value.filter((v) => v instanceof File);
+	}
+
+	/**
+	 * Retrieves the value of the specified form field as a number.
+	 *
+	 * @param key - The name of the form field.
+	 * @throws {Parser.MissingKeyError} If the key is missing from the form data.
+	 * @throws {Parser.InvalidTypeError} If the value is not a valid number.
+	 * @returns The number value associated with the key.
+	 */
+	public getNumber(key: string): number {
+		let value = this.get(key);
+		if (typeof value === "number") return value;
+		if (typeof value === "string") {
+			let number = Number(value);
+			if (!Number.isNaN(number)) return number;
+		}
+		throw new Parser.InvalidTypeError(key, "number", typeof value);
 	}
 }

@@ -161,4 +161,24 @@ describe(FormParser.name, () => {
 
 		expect(parser.getFileArray("files")).toEqual([file]);
 	});
+
+	test("#getNumber", () => {
+		let formData = new FormData();
+		formData.set("age", "25");
+
+		let parser = new FormParser(formData);
+
+		expect(parser.getNumber("age")).toBe(25);
+	});
+
+	test("#getNumber throws if the value is not a number", () => {
+		let formData = new FormData();
+		formData.set("age", "twenty-five");
+
+		let parser = new FormParser(formData);
+
+		expect(() => parser.getNumber("age")).toThrow(
+			'Key "age" expected number but got string',
+		);
+	});
 });
