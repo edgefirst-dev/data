@@ -35,15 +35,21 @@ export class SearchParamsParser extends Parser<URLSearchParams> {
 	}
 
 	/**
-	 * Check if a key exists in the search params.
+	 * Checks if a key exists in the search parameters.
+	 *
+	 * @param key - The name of the search parameter.
+	 * @returns `true` if the key exists, otherwise `false`.
 	 */
 	public has(key: string): boolean {
 		return this.value.has(key);
 	}
 
 	/**
-	 * Access a value from the search params.
-	 * @throws {Parser.MissingKeyError} If the key does not exist.
+	 * Retrieves the value associated with the specified search parameter.
+	 *
+	 * @param key - The name of the search parameter.
+	 * @throws {Parser.MissingKeyError} If the key is missing from the search parameters.
+	 * @returns The value associated with the key.
 	 */
 	public get(key: string) {
 		let value = this.value.get(key);

@@ -49,6 +49,31 @@ import type { Parser } from "./lib/parser.js";
 export abstract class Data<P extends Parser = Parser> {
 	constructor(protected parser: P) {}
 
+	/**
+	 * Converts the `Data` object into a plain JSON representation, including all
+	 * properties defined as getters in the subclass.
+	 *
+	 * The `toJSON` method dynamically identifies getter properties in the
+	 * subclass and collects their values to construct a JSON object. This is
+	 * particularly useful when you want to serialize the `Data` object for APIs,
+	 * logging, or other use cases requiring JSON format.
+	 *
+	 * @returns A plain object representing the `Data` instance with all getter properties.
+	 *
+	 * @example
+	 * class LoginData extends Data<FormParser> {
+	 *   get username() {
+	 *     return this.parser.getString("username");
+	 *   }
+	 *   get password() {
+	 *     return this.parser.getString("password");
+	 *   }
+	 * }
+	 *
+	 * const loginData = new LoginData(new FormParser(formData));
+	 * console.log(JSON.stringify(loginData.toJSON()));
+	 * // Output: { "username": "johndoe", "password": "secret" }
+	 */
 	toJSON() {
 		let proto = Object.getPrototypeOf(this);
 		let descriptors = Object.getOwnPropertyDescriptors(proto);

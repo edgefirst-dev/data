@@ -58,10 +58,23 @@ export class ObjectParser extends Parser<object> {
 		super(data);
 	}
 
+	/**
+	 * Checks if the given key exists in the object.
+	 *
+	 * @param key - The key to check.
+	 * @returns `true` if the key exists, otherwise `false`.
+	 */
 	public has(key: ObjectParser.Key): boolean {
 		return key in this.value;
 	}
 
+	/**
+	 * Retrieves the value associated with the specified key.
+	 *
+	 * @param key - The key to retrieve the value for.
+	 * @throws {Parser.MissingKeyError} If the key is missing.
+	 * @returns The value associated with the key.
+	 */
 	public get<O = unknown>(key: ObjectParser.Key): O {
 		if (this.value && typeof this.value === "object" && key in this.value) {
 			return (this.value as Record<ObjectParser.Key, unknown>)[key] as O;
@@ -70,28 +83,62 @@ export class ObjectParser extends Parser<object> {
 		throw new Parser.MissingKeyError(String(key));
 	}
 
+	/**
+	 * Retrieves the type of the value associated with the specified key.
+	 *
+	 * @param key - The key to check the type for.
+	 * @returns The type of the value as a string (e.g., "string", "number").
+	 */
 	public typeOf(key: ObjectParser.Key) {
 		return typeof this.get(key);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a string.
+	 *
+	 * @param key - The key to retrieve the string value for.
+	 * @throws {Parser.InvalidTypeError} If the value is not a string.
+	 * @returns The string value.
+	 */
 	public getString(key: ObjectParser.Key): string {
 		let value = this.get(key);
 		if (typeof value === "string") return value;
 		throw new Parser.InvalidTypeError(String(key), "string", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a number.
+	 *
+	 * @param key - The key to retrieve the number value for.
+	 * @throws {Parser.InvalidTypeError} If the value is not a number.
+	 * @returns The number value.
+	 */
 	public getNumber(key: ObjectParser.Key): number {
 		let value = this.get(key);
 		if (typeof value === "number") return value;
 		throw new Parser.InvalidTypeError(String(key), "number", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a boolean.
+	 *
+	 * @param key - The key to retrieve the boolean value for.
+	 * @throws {Parser.InvalidTypeError} If the value is not a boolean.
+	 * @returns The boolean value.
+	 */
 	public getBoolean(key: ObjectParser.Key): boolean {
 		let value = this.get(key);
 		if (typeof value === "boolean") return value;
 		throw new Parser.InvalidTypeError(String(key), "boolean", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as an `ObjectParser` for nested object access.
+	 *
+	 * @param key - The key to retrieve the object value for.
+	 * @throws {Parser.InvalidTypeError} If the value is not an object.
+	 * @returns A new `ObjectParser` instance for the nested object.
+	 */
 	public getObject(key: ObjectParser.Key): ObjectParser {
 		let value = this.get(key);
 		if (typeof value === "object" && value !== null) {
@@ -100,18 +147,39 @@ export class ObjectParser extends Parser<object> {
 		throw new Parser.InvalidTypeError(String(key), "object", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as an array.
+	 *
+	 * @param key - The key to retrieve the array for.
+	 * @throws {Parser.InvalidTypeError} If the value is not an array.
+	 * @returns The array value.
+	 */
 	public getArray(key: ObjectParser.Key) {
 		let value = this.get(key);
 		if (Array.isArray(value)) return value;
 		throw new Parser.InvalidTypeError(String(key), "array", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a `bigint`.
+	 *
+	 * @param key - The key to retrieve the bigint value for.
+	 * @throws {Parser.InvalidTypeError} If the value is not a `bigint`.
+	 * @returns The `bigint` value.
+	 */
 	public getBigInt(key: ObjectParser.Key): bigint {
 		let value = this.get(key);
 		if (typeof value === "bigint") return value;
 		throw new Parser.InvalidTypeError(String(key), "bigint", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a function.
+	 *
+	 * @param key - The key to retrieve the function for.
+	 * @throws {Parser.InvalidTypeError} If the value is not a function.
+	 * @returns The function value.
+	 */
 	// biome-ignore lint/complexity/noBannedTypes: We need to use that type
 	public getFunction(key: ObjectParser.Key): Function {
 		let value = this.get(key);
@@ -119,27 +187,57 @@ export class ObjectParser extends Parser<object> {
 		throw new Parser.InvalidTypeError(String(key), "function", typeof value);
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a symbol.
+	 *
+	 * @param key - The key to retrieve the symbol for.
+	 * @throws {Parser.InvalidTypeError} If the value is not a symbol.
+	 * @returns The symbol value.
+	 */
 	public getSymbol(key: ObjectParser.Key): symbol {
 		let value = this.get(key);
 		if (typeof value === "symbol") return value;
 		throw new Parser.InvalidTypeError(String(key), "symbol", typeof value);
 	}
 
+	/**
+	 * Checks if the value associated with the key is `null`.
+	 *
+	 * @param key - The key to check.
+	 * @returns `true` if the value is `null`, otherwise `false`.
+	 */
 	public isNull(key: ObjectParser.Key): boolean {
 		return this.get(key) === null;
 	}
 
+	/**
+	 * Checks if the value associated with the key is `undefined`.
+	 *
+	 * @param key - The key to check.
+	 * @returns `true` if the value is `undefined`, otherwise `false`.
+	 */
 	public isUndefined(key: ObjectParser.Key): boolean {
 		return this.get(key) === undefined;
 	}
 
+	/**
+	 * Retrieves the value associated with the key as a `Date` object.
+	 *
+	 * @param key - The key to retrieve the `Date` for.
+	 * @throws {Parser.InvalidInstanceOfError} If the value is not a `Date` instance.
+	 * @returns The `Date` value.
+	 */
 	public getDate(key: ObjectParser.Key): Date {
 		return this.getInstanceOf(key, Date);
 	}
 
 	/**
 	 * Access a value from the object as an instance of the provided constructor.
+	 *
+	 * @param key - The key to retrieve the instance for.
+	 * @param ctor - The constructor function to check the instance against.
 	 * @throws {Parser.InvalidInstanceOfError} If the value is not an instance of the provided constructor.
+	 * @returns The value as an instance of the provided constructor.
 	 */
 	public getInstanceOf<I>(
 		key: ObjectParser.Key,
