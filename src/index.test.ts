@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { Data } from "./data.js";
+import { Data } from "./index.js";
 import { ObjectParser } from "./lib/object-parser.js";
 
 describe(Data.name, () => {

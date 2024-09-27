@@ -1,4 +1,4 @@
-import { Parser } from "../parser.js";
+import { Parser } from "./parser.js";
 
 /**
  * The `FormParser` is a specialized parser designed to safely extract and

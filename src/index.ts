@@ -1,4 +1,4 @@
-import type { Parser } from "./parser.js";
+import type { Parser } from "./lib/parser.js";
 
 /**
  * The `Data` class is an abstract representation of a Data Transfer Object

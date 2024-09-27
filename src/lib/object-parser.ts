@@ -1,4 +1,4 @@
-import { Parser } from "../parser.js";
+import { Parser } from "./parser.js";
 
 export namespace ObjectParser {
 	export type Key = string | number | symbol;
