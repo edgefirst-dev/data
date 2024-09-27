@@ -1,7 +1,7 @@
 {
 	"name": "@edgefirst-dev/data",
 	"version": "0.0.0",
-	"description": "A description of the package",
+	"description": "TypeScript utilities for safely parsing and handling structured data using DTOs and parsers for FormData, URLSearchParams, and JSON objects.",
 	"license": "MIT",
 	"funding": ["https://github.com/sponsors/sergiodxa"],
 	"author": {
