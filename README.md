@@ -41,11 +41,11 @@ import { FormParser } from "@edgefirst-dev/data/parser";
 
 class LoginData extends Data<FormParser> {
   get username() {
-    return this.parser.getString("username");
+    return this.parser.string("username");
   }
 
   get password() {
-    return this.parser.getString("password");
+    return this.parser.string("password");
   }
 }
 
@@ -79,7 +79,7 @@ formData.append("username", "johndoe");
 
 const parser = new FormParser(formData);
 
-console.log(parser.getString("username")); // "johndoe"
+console.log(parser.string("username")); // "johndoe"
 ```
 
 ### SearchParamsParser
@@ -109,8 +109,8 @@ import { ObjectParser } from "@edgefirst-dev/data/parser";
 const data = { name: "Alice", age: 30 };
 const parser = new ObjectParser(data);
 
-console.log(parser.getString("name")); // "Alice"
-console.log(parser.getNumber("age")); // 30
+console.log(parser.string("name")); // "Alice"
+console.log(parser.number("age")); // 30
 ```
 
 ## Error Handling
@@ -120,6 +120,9 @@ All parser classes throw specialized errors when validation fails:
 - `Parser.MissingKeyError`: Thrown when a required key is missing.
 - `Parser.InvalidTypeError`: Thrown when a value is not of the expected type.
 - `Parser.InvalidInstanceOfError`: Thrown when a value is not an instance of the expected class.
+- `Parser.CoercionError`: Thrown when a value cannot be coerced to the expected type.
+
+And each one extends the base `Parser.Error` class, so you can catch all parser errors with a single `instanceof` condition.
 
 ### Example
 
@@ -129,10 +132,13 @@ import { ObjectParser } from "@edgefirst-dev/data/parser";
 try {
   const data = { name: "Alice", age: 30 };
   const parser = new ObjectParser(data);
-  console.log(parser.getString("email")); // Throws Parser.MissingKeyError
+  console.log(parser.string("email")); // Throws Parser.MissingKeyError
 } catch (error) {
   if (error instanceof Parser.MissingKeyError) {
-    console.error(error.message); // Key "email" does not exist
+    // Handle missing key error
+  }
+  if (error instanceof Parser.Error) {
+    // Handle other parser errors
   }
   throw error; // Re-throw unexpected errors
 }

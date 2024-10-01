@@ -42,146 +42,146 @@ describe(ObjectParser.name, () => {
 		expect(parser.typeOf("active")).toBe("boolean");
 	});
 
-	test("#getString", () => {
+	test("#string", () => {
 		let object = { name: "Alice" };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getString("name")).toBe("Alice");
+		expect(parser.string("name")).toBe("Alice");
 	});
 
-	test("#getString throw if the value is not a string", () => {
+	test("#string throw if the value is not a string", () => {
 		let object = { name: 123 };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getString("name")).toThrow(
+		expect(() => parser.string("name")).toThrow(
 			'Key "name" expected string but got number',
 		);
 	});
 
-	test("#getNumber", () => {
+	test("#number", () => {
 		let object = { age: 20 };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getNumber("age")).toBe(20);
+		expect(parser.number("age")).toBe(20);
 	});
 
-	test("#getNumber throw if the value is not a number", () => {
+	test("#number throw if the value is not a number", () => {
 		let object = { age: "twenty" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getNumber("age")).toThrow(
+		expect(() => parser.number("age")).toThrow(
 			'Key "age" expected number but got string',
 		);
 	});
 
-	test("#getBoolean", () => {
+	test("#boolean", () => {
 		let object = { active: true };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getBoolean("active")).toBe(true);
+		expect(parser.boolean("active")).toBe(true);
 	});
 
-	test("#getBoolean throw if the value is not a boolean", () => {
+	test("#boolean throw if the value is not a boolean", () => {
 		let object = { active: "true" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getBoolean("active")).toThrow(
+		expect(() => parser.boolean("active")).toThrow(
 			'Key "active" expected boolean but got string',
 		);
 	});
 
-	test("#getObject", () => {
+	test("#object", () => {
 		let object = { user: { name: "Alice" } };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getObject("user")).toBeInstanceOf(ObjectParser);
+		expect(parser.object("user")).toBeInstanceOf(ObjectParser);
 	});
 
-	test("#getObject throw if the value is not an object", () => {
+	test("#object throw if the value is not an object", () => {
 		let object = { user: "Alice" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getObject("user")).toThrow(
+		expect(() => parser.object("user")).toThrow(
 			'Key "user" expected object but got string',
 		);
 	});
 
-	test("#getArray", () => {
+	test("#array", () => {
 		let object = { names: ["Alice", "Bob"] };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getArray("names")).toEqual(["Alice", "Bob"]);
+		expect(parser.array("names")).toEqual(["Alice", "Bob"]);
 	});
 
-	test("#getArray throw if the value is not an array", () => {
+	test("#array throw if the value is not an array", () => {
 		let object = { names: "Alice" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getArray("names")).toThrow(
+		expect(() => parser.array("names")).toThrow(
 			'Key "names" expected array but got string',
 		);
 	});
 
-	test("#getBigInt", () => {
+	test("#bigint", () => {
 		let object = { id: BigInt(123) };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getBigInt("id")).toBe(BigInt(123));
+		expect(parser.bigint("id")).toBe(BigInt(123));
 	});
 
-	test("#getBigInt throw if the value is not a bigint", () => {
+	test("#bigint throw if the value is not a bigint", () => {
 		let object = { id: 123 };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getBigInt("id")).toThrow(
+		expect(() => parser.bigint("id")).toThrow(
 			'Key "id" expected bigint but got number',
 		);
 	});
 
-	test("#getFunction", () => {
+	test("#function", () => {
 		let object = { greet: () => "Hello" };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getFunction("greet")).toBeInstanceOf(Function);
+		expect(parser.function("greet")).toBeInstanceOf(Function);
 	});
 
-	test("#getFunction throw if the value is not a function", () => {
+	test("#function throw if the value is not a function", () => {
 		let object = { greet: "Hello" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getFunction("greet")).toThrow(
+		expect(() => parser.function("greet")).toThrow(
 			'Key "greet" expected function but got string',
 		);
 	});
 
-	test("#getSymbol", () => {
+	test("#symbol", () => {
 		let object = { symbol: Symbol.for("symbol") };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getSymbol("symbol")).toBe(Symbol.for("symbol"));
+		expect(parser.symbol("symbol")).toBe(Symbol.for("symbol"));
 	});
 
-	test("#getSymbol throw if the value is not a symbol", () => {
+	test("#symbol throw if the value is not a symbol", () => {
 		let object = { symbol: "symbol" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getSymbol("symbol")).toThrow(
+		expect(() => parser.symbol("symbol")).toThrow(
 			'Key "symbol" expected symbol but got string',
 		);
 	});
@@ -218,45 +218,45 @@ describe(ObjectParser.name, () => {
 		expect(parser.isUndefined("name")).toBe(false);
 	});
 
-	test("#getDate", () => {
+	test("#date", () => {
 		let object = { createdAt: new Date() };
 
 		let parser = new ObjectParser(object);
 
-		expect(parser.getDate("createdAt")).toBeInstanceOf(Date);
+		expect(parser.date("createdAt")).toBeInstanceOf(Date);
 	});
 
-	test("#getDate throw if the value is not a date", () => {
+	test("#date throw if the value is not a date", () => {
 		let object = { createdAt: "2021-10-20" };
 
 		let parser = new ObjectParser(object);
 
-		expect(() => parser.getDate("createdAt")).toThrow(
+		expect(() => parser.date("createdAt")).toThrow(
 			'Key "createdAt" expected instance of Date',
 		);
 	});
 
-	test("#getInstanceOf", () => {
+	test("#instanceOf", () => {
 		let object = { createdAt: new Intl.DateTimeFormat() };
 
 		let parser = new ObjectParser(object);
 
-		expect(
-			parser.getInstanceOf("createdAt", Intl.DateTimeFormat),
-		).toBeInstanceOf(Intl.DateTimeFormat);
+		expect(parser.instanceOf("createdAt", Intl.DateTimeFormat)).toBeInstanceOf(
+			Intl.DateTimeFormat,
+		);
 
-		expect(() => parser.getInstanceOf("createdAt", Array)).toThrow(
+		expect(() => parser.instanceOf("createdAt", Array)).toThrow(
 			'Key "createdAt" expected instance of Array',
 		);
 	});
 
-	test("#getInstanceOf throw if the value is not an instance of the constructor", () => {
+	test("#instanceOf throw if the value is not an instance of the constructor", () => {
 		let object = { createdAt: new Date() };
 
 		let parser = new ObjectParser(object);
 
-		expect(() =>
-			parser.getInstanceOf("createdAt", Intl.DateTimeFormat),
-		).toThrow('Key "createdAt" expected instance of DateTimeFormat');
+		expect(() => parser.instanceOf("createdAt", Intl.DateTimeFormat)).toThrow(
+			'Key "createdAt" expected instance of DateTimeFormat',
+		);
 	});
 });

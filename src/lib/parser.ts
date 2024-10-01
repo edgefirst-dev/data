@@ -50,9 +50,31 @@
  */
 export abstract class Parser<T = unknown> {
 	constructor(protected value: T) {}
+
+	valueOf(): T {
+		return this.value;
+	}
 }
 
 export namespace Parser {
+	/**
+	 * The `Error` class is a custom error type used by the `Parser` class and its
+	 * subclasses to signal errors during parsing and validation of structured
+	 * data.
+	 *
+	 * This class extends the global `Error` class and provides a consistent
+	 * error name (`ParserError`) for all parser-related errors, making it easier
+	 * to identify and handle parser-specific exceptions.
+	 *
+	 * @example
+	 * throw new Parser.Error("Something went wrong");
+	 * // Error: Something went wrong
+	 */
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: We are shadowing the global Error class intentionally.
+	export class Error extends globalThis.Error {
+		override name = "ParserError";
+	}
+
 	/**
 	 * The `MissingKeyError` is thrown when an attempt is made to access a key
 	 * that does not exist in the parsed data.
@@ -64,8 +86,8 @@ export namespace Parser {
 	 * throw new Parser.MissingKeyError("username");
 	 * // Error: Key "username" does not exist
 	 */
-	export class MissingKeyError extends ReferenceError {
-		override name = "MissingKeyError";
+	export class MissingKeyError extends Error {
+		override name = "ParserMissingKeyError";
 
 		/**
 		 * Constructs a new `MissingKeyError` with the specified key name.
@@ -87,8 +109,8 @@ export namespace Parser {
 	 * throw new Parser.InvalidTypeError("age", "number", typeof value);
 	 * // Error: Key "age" expected number but got string
 	 */
-	export class InvalidTypeError extends TypeError {
-		override name = "InvalidTypeError";
+	export class InvalidTypeError extends Error {
+		override name = "ParserInvalidTypeError";
 
 		/**
 		 * Constructs a new `InvalidTypeError` with the specified key, expected
@@ -115,7 +137,7 @@ export namespace Parser {
 	 * // Error: Key "createdAt" expected instance of Date
 	 */
 	export class InvalidInstanceOfError extends Error {
-		override name = "InvalidInstanceOfError";
+		override name = "ParserInvalidInstanceOfError";
 
 		/**
 		 * Constructs a new `InvalidInstanceOfError` with the specified key and
@@ -126,6 +148,25 @@ export namespace Parser {
 		 */
 		constructor(key: string, expected: string) {
 			super(`Key "${key}" expected instance of ${expected}`);
+		}
+	}
+
+	/**
+	 * The `CoercionError` is thrown when a value associated with a key cannot be
+	 * coerced into a another type.
+	 *
+	 * This error helps enforce type safety in parsers by signaling when the value
+	 * is not a valid value of the target type.
+	 *
+	 * @example
+	 * throw new Parser.CoercionError("age", "number");
+	 * // Error: Key "age" could not be coerced to number
+	 */
+	export class CoercionError extends Error {
+		override name = "ParserCoercionError";
+
+		constructor(key: string, type: string) {
+			super(`Key "${key}" could not be coerced to ${type}`);
 		}
 	}
 }

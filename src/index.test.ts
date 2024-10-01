@@ -6,11 +6,11 @@ import { ObjectParser } from "./lib/object-parser.js";
 describe(Data.name, () => {
 	class MyData extends Data<ObjectParser> {
 		get name() {
-			return this.parser.getString("name");
+			return this.parser.string("name");
 		}
 
 		get emailHost() {
-			return this.parser.getString("email").split("@").at(1);
+			return this.parser.string("email").split("@").at(1);
 		}
 	}
 

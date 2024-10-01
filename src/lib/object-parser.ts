@@ -17,7 +17,7 @@ export namespace ObjectParser {
  * ### Usage
  * `ObjectParser` wraps a generic object and provides methods to:
  * - Check if a key exists (`has`).
- * - Retrieve values of specific types (`getString`, `getNumber`, `getArray`, etc.).
+ * - Retrieve values of specific types (`string`, `number`, `array`, etc.).
  * - Handle complex nested objects by returning new `ObjectParser` instances.
  * - Validate the type or instance of an object field.
  *
@@ -26,11 +26,11 @@ export namespace ObjectParser {
  * easier.
  *
  * ### How It Works
- * - Methods like `getString`, `getNumber`, and `getArray` enforce the type
+ * - Methods like `string`, `number`, and `array` enforce the type
  *   correctness of the retrieved values.
- * - For nested objects, the `getObject` method returns a new `ObjectParser`
+ * - For nested objects, the `object` method returns a new `ObjectParser`
  *   instance, allowing safe and structured access to deeply nested data.
- * - The `getInstanceOf` method ensures that an object is an instance of the
+ * - The `instanceOf` method ensures that an object is an instance of the
  *   specified constructor, which is useful for retrieving specific types like `Date`.
  *
  * @extends Parser<object>
@@ -44,10 +44,10 @@ export namespace ObjectParser {
  * };
  * let parser = new ObjectParser(data);
  *
- * parser.getString("username"); // "John"
- * parser.getNumber("age"); // 30
+ * parser.string("username"); // "John"
+ * parser.number("age"); // 30
  * parser.getBoolean("active"); // true
- * parser.getObject("metadata").getString("role"); // "admin"
+ * parser.object("metadata").string("role"); // "admin"
  */
 export class ObjectParser extends Parser<object> {
 	constructor(data: unknown) {
@@ -100,7 +100,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not a string.
 	 * @returns The string value.
 	 */
-	public getString(key: ObjectParser.Key): string {
+	public string(key: ObjectParser.Key): string {
 		let value = this.get(key);
 		if (typeof value === "string") return value;
 		throw new Parser.InvalidTypeError(String(key), "string", typeof value);
@@ -113,7 +113,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not a number.
 	 * @returns The number value.
 	 */
-	public getNumber(key: ObjectParser.Key): number {
+	public number(key: ObjectParser.Key): number {
 		let value = this.get(key);
 		if (typeof value === "number") return value;
 		throw new Parser.InvalidTypeError(String(key), "number", typeof value);
@@ -126,7 +126,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not a boolean.
 	 * @returns The boolean value.
 	 */
-	public getBoolean(key: ObjectParser.Key): boolean {
+	public boolean(key: ObjectParser.Key): boolean {
 		let value = this.get(key);
 		if (typeof value === "boolean") return value;
 		throw new Parser.InvalidTypeError(String(key), "boolean", typeof value);
@@ -139,7 +139,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not an object.
 	 * @returns A new `ObjectParser` instance for the nested object.
 	 */
-	public getObject(key: ObjectParser.Key): ObjectParser {
+	public object(key: ObjectParser.Key): ObjectParser {
 		let value = this.get(key);
 		if (typeof value === "object" && value !== null) {
 			return new ObjectParser(value);
@@ -154,7 +154,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not an array.
 	 * @returns The array value.
 	 */
-	public getArray(key: ObjectParser.Key) {
+	public array(key: ObjectParser.Key) {
 		let value = this.get(key);
 		if (Array.isArray(value)) return value;
 		throw new Parser.InvalidTypeError(String(key), "array", typeof value);
@@ -167,7 +167,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not a `bigint`.
 	 * @returns The `bigint` value.
 	 */
-	public getBigInt(key: ObjectParser.Key): bigint {
+	public bigint(key: ObjectParser.Key): bigint {
 		let value = this.get(key);
 		if (typeof value === "bigint") return value;
 		throw new Parser.InvalidTypeError(String(key), "bigint", typeof value);
@@ -181,7 +181,7 @@ export class ObjectParser extends Parser<object> {
 	 * @returns The function value.
 	 */
 	// biome-ignore lint/complexity/noBannedTypes: We need to use that type
-	public getFunction(key: ObjectParser.Key): Function {
+	public function(key: ObjectParser.Key): Function {
 		let value = this.get(key);
 		if (typeof value === "function") return value;
 		throw new Parser.InvalidTypeError(String(key), "function", typeof value);
@@ -194,7 +194,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidTypeError} If the value is not a symbol.
 	 * @returns The symbol value.
 	 */
-	public getSymbol(key: ObjectParser.Key): symbol {
+	public symbol(key: ObjectParser.Key): symbol {
 		let value = this.get(key);
 		if (typeof value === "symbol") return value;
 		throw new Parser.InvalidTypeError(String(key), "symbol", typeof value);
@@ -227,8 +227,8 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidInstanceOfError} If the value is not a `Date` instance.
 	 * @returns The `Date` value.
 	 */
-	public getDate(key: ObjectParser.Key): Date {
-		return this.getInstanceOf(key, Date);
+	public date(key: ObjectParser.Key): Date {
+		return this.instanceOf(key, Date);
 	}
 
 	/**
@@ -239,7 +239,7 @@ export class ObjectParser extends Parser<object> {
 	 * @throws {Parser.InvalidInstanceOfError} If the value is not an instance of the provided constructor.
 	 * @returns The value as an instance of the provided constructor.
 	 */
-	public getInstanceOf<I>(
+	public instanceOf<I>(
 		key: ObjectParser.Key,
 		// biome-ignore lint/suspicious/noExplicitAny: This is needed
 		ctor: new (...args: any[]) => I,

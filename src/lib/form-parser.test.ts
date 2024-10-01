@@ -22,59 +22,59 @@ describe(FormParser.name, () => {
 		expect(parser.has("age")).toBe(false);
 	});
 
-	test("#getString", () => {
+	test("#string", () => {
 		let formData = new FormData();
 		formData.set("name", "Alice");
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getString("name")).toBe("Alice");
+		expect(parser.string("name")).toBe("Alice");
 	});
 
-	test("#getString throw if the key is missing", () => {
+	test("#string throw if the key is missing", () => {
 		let formData = new FormData();
 		let parser = new FormParser(formData);
 
-		expect(() => parser.getString("name")).toThrow('Key "name" does not exist');
+		expect(() => parser.string("name")).toThrow('Key "name" does not exist');
 	});
 
-	test("#getString throw if the value is not a string", () => {
+	test("#string throw if the value is not a string", () => {
 		let formData = new FormData();
 		formData.set("name", new File([], "file.txt"));
 
 		let parser = new FormParser(formData);
 
-		expect(() => parser.getString("name")).toThrow(
+		expect(() => parser.string("name")).toThrow(
 			'Key "name" expected string but got object',
 		);
 	});
 
-	test("#getBoolean", () => {
+	test("#boolean", () => {
 		let formData = new FormData();
 		formData.set("active", "on");
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getBoolean("active")).toBe(true);
+		expect(parser.boolean("active")).toBe(true);
 	});
 
-	test("#getBoolean returns false if the key is missing", () => {
+	test("#boolean returns false if the key is missing", () => {
 		let formData = new FormData();
 		let parser = new FormParser(formData);
 
-		expect(parser.getBoolean("active")).toBe(false);
+		expect(parser.boolean("active")).toBe(false);
 	});
 
-	test("#getBoolean returns false if the value is not 'on'", () => {
+	test("#boolean returns false if the value is not 'on'", () => {
 		let formData = new FormData();
 		formData.set("active", "off");
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getBoolean("active")).toBe(false);
+		expect(parser.boolean("active")).toBe(false);
 	});
 
-	test("#getFile", () => {
+	test("#file", () => {
 		let file = new File([], "file.txt");
 
 		let formData = new FormData();
@@ -82,55 +82,55 @@ describe(FormParser.name, () => {
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getFile("file")).toEqual(file);
+		expect(parser.file("file")).toEqual(file);
 	});
 
-	test("#getFile throws if the key is missing", () => {
+	test("#file throws if the key is missing", () => {
 		let formData = new FormData();
 		let parser = new FormParser(formData);
 
-		expect(() => parser.getFile("file")).toThrow('Key "file" does not exist');
+		expect(() => parser.file("file")).toThrow('Key "file" does not exist');
 	});
 
-	test("#getFile throws if the value is not a File", () => {
+	test("#file throws if the value is not a File", () => {
 		let formData = new FormData();
 		formData.set("file", "file.txt");
 
 		let parser = new FormParser(formData);
 
-		expect(() => parser.getFile("file")).toThrow(
+		expect(() => parser.file("file")).toThrow(
 			'Key "file" expected instance of File',
 		);
 	});
 
-	test("#getStringArray", () => {
+	test("#stringArray", () => {
 		let formData = new FormData();
 		formData.set("names", "Alice");
 		formData.append("names", "Bob");
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getStringArray("names")).toEqual(["Alice", "Bob"]);
+		expect(parser.stringArray("names")).toEqual(["Alice", "Bob"]);
 	});
 
-	test("#getStringArray returns an empty array if the key is missing", () => {
+	test("#stringArray returns an empty array if the key is missing", () => {
 		let formData = new FormData();
 		let parser = new FormParser(formData);
 
-		expect(parser.getStringArray("names")).toEqual([]);
+		expect(parser.stringArray("names")).toEqual([]);
 	});
 
-	test("#getStringArray filters out non-string values", () => {
+	test("#stringArray filters out non-string values", () => {
 		let formData = new FormData();
 		formData.set("names", "Alice");
 		formData.append("names", new File([], "file.txt"));
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getStringArray("names")).toEqual(["Alice"]);
+		expect(parser.stringArray("names")).toEqual(["Alice"]);
 	});
 
-	test("#getFileArray", () => {
+	test("#fileArray", () => {
 		let file1 = new File([], "file1.txt");
 		let file2 = new File([], "file2.txt");
 
@@ -140,17 +140,17 @@ describe(FormParser.name, () => {
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getFileArray("files")).toEqual([file1, file2]);
+		expect(parser.fileArray("files")).toEqual([file1, file2]);
 	});
 
-	test("#getFileArray returns an empty array if the key is missing", () => {
+	test("#fileArray returns an empty array if the key is missing", () => {
 		let formData = new FormData();
 		let parser = new FormParser(formData);
 
-		expect(parser.getFileArray("files")).toEqual([]);
+		expect(parser.fileArray("files")).toEqual([]);
 	});
 
-	test("#getFileArray filters out non-File values", () => {
+	test("#fileArray filters out non-File values", () => {
 		let file = new File([], "file.txt");
 
 		let formData = new FormData();
@@ -159,26 +159,26 @@ describe(FormParser.name, () => {
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getFileArray("files")).toEqual([file]);
+		expect(parser.fileArray("files")).toEqual([file]);
 	});
 
-	test("#getNumber", () => {
+	test("#number", () => {
 		let formData = new FormData();
 		formData.set("age", "25");
 
 		let parser = new FormParser(formData);
 
-		expect(parser.getNumber("age")).toBe(25);
+		expect(parser.number("age")).toBe(25);
 	});
 
-	test("#getNumber throws if the value is not a number", () => {
+	test("#number throws if the value can't be parsed as a number", () => {
 		let formData = new FormData();
 		formData.set("age", "twenty-five");
 
 		let parser = new FormParser(formData);
 
-		expect(() => parser.getNumber("age")).toThrow(
-			'Key "age" expected number but got string',
+		expect(() => parser.number("age")).toThrow(
+			`Key "age" could not be coerced to number`,
 		);
 	});
 });
