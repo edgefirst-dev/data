@@ -1,6 +1,6 @@
 {
 	"name": "@edgefirst-dev/data",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "TypeScript utilities for safely parsing and handling structured data using DTOs and parsers for FormData, URLSearchParams, and JSON objects.",
 	"license": "MIT",
 	"funding": [
