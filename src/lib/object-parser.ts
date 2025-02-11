@@ -90,6 +90,8 @@ export class ObjectParser extends Parser<object> {
 	 *
 	 * @param key - The key to set the value for.
 	 * @param value The value to set.
+	 * @example
+	 * parser.set("username", "johndoe");
 	 */
 	public set<O = unknown>(key: ObjectParser.Key, value: O): void {
 		(this.value as Record<ObjectParser.Key, unknown>)[key] = value;

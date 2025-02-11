@@ -73,6 +73,20 @@ export class FormParser extends Parser<FormData> {
 	}
 
 	/**
+	 * Sets the value of a form field.
+	 *
+	 * If the key already exists, the value is replaced with the new value.
+	 *
+	 * @param key - The name of the form field.
+	 * @param value A string, Blob, or File to set as the value for the key.
+	 * @example
+	 * parser.set("username", "johndoe");
+	 */
+	public set(key: string, value: string | Blob | File) {
+		this.value.set(key, value);
+	}
+
+	/**
 	 * Returns `true` if the value of the specified field is `"on"`, otherwise
 	 * `false`.
 	 *

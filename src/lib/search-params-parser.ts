@@ -47,7 +47,7 @@ export class SearchParamsParser extends Parser<URLSearchParams> {
 	/**
 	 * Retrieves the value associated with the specified search parameter.
 	 *
-	 * @param key - The name of the search parameter.
+	 * @param key The name of the search parameter.
 	 * @throws {Parser.MissingKeyError} If the key is missing from the search parameters.
 	 * @returns The value associated with the key.
 	 */
@@ -55,5 +55,19 @@ export class SearchParamsParser extends Parser<URLSearchParams> {
 		let value = this.value.get(key);
 		if (value === null) throw new Parser.MissingKeyError(key);
 		return value;
+	}
+
+	/**
+	 * Sets the value of a search parameter.
+	 *
+	 * If the key already exists, the value is replaced with the new value.
+	 *
+	 * @param key The name of the search parameter.
+	 * @param value The value to set for the key.
+	 * @example
+	 * parser.set("username", "johndoe");
+	 */
+	public set(key: string, value: string) {
+		this.value.set(key, value);
 	}
 }
