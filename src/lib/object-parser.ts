@@ -84,6 +84,18 @@ export class ObjectParser extends Parser<object> {
 	}
 
 	/**
+	 * Sets the value associated with the specified key.
+	 *
+	 * If the key does not exist, it will be created.
+	 *
+	 * @param key - The key to set the value for.
+	 * @param value The value to set.
+	 */
+	public set<O = unknown>(key: ObjectParser.Key, value: O): void {
+		(this.value as Record<ObjectParser.Key, unknown>)[key] = value;
+	}
+
+	/**
 	 * Retrieves the type of the value associated with the specified key.
 	 *
 	 * @param key - The key to check the type for.
