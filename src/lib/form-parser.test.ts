@@ -181,4 +181,15 @@ describe(FormParser.name, () => {
 			`Key "age" could not be coerced to number`,
 		);
 	});
+
+	test("#set sets the value of a form field", () => {
+		let formData = new FormData();
+		let parser = new FormParser(formData);
+
+		parser.set("name", "Alice");
+		parser.set("age", "25");
+
+		expect(formData.get("name")).toBe("Alice");
+		expect(formData.get("age")).toBe("25");
+	});
 });

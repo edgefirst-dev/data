@@ -57,4 +57,13 @@ describe(SearchParamsParser.name, () => {
 
 		expect(() => parser.get("name")).toThrow('Key "name" does not exist');
 	});
+
+	test("#set adds a new key-value pair", () => {
+		let searchParams = new URLSearchParams();
+		let parser = new SearchParamsParser(searchParams);
+
+		parser.set("name", "Alice");
+
+		expect(parser.get("name")).toBe("Alice");
+	});
 });

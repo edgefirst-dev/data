@@ -259,4 +259,15 @@ describe(ObjectParser.name, () => {
 			'Key "createdAt" expected instance of DateTimeFormat',
 		);
 	});
+
+	test("#set sets the value of a key", () => {
+		let object = { name: "Alice" };
+		let parser = new ObjectParser(object);
+
+		parser.set("name", "Bob");
+		parser.set("age", 20);
+
+		expect(parser.string("name")).toBe("Bob");
+		expect(parser.number("age")).toBe(20);
+	});
 });
