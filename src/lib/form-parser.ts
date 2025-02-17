@@ -55,7 +55,7 @@ export class FormParser extends Parser<FormData> {
 	 */
 	public get(key: string): unknown {
 		let value = this.value.get(key);
-		if (!value) throw new Parser.MissingKeyError(key);
+		if (value === null) throw new Parser.MissingKeyError(key);
 		return value;
 	}
 
