@@ -25,10 +25,12 @@ describe(FormParser.name, () => {
 	test("#string", () => {
 		let formData = new FormData();
 		formData.set("name", "Alice");
+		formData.set("age", "");
 
 		let parser = new FormParser(formData);
 
 		expect(parser.string("name")).toBe("Alice");
+		expect(parser.string("age")).toBe("");
 	});
 
 	test("#string throw if the key is missing", () => {
